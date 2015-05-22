@@ -112,6 +112,7 @@ bool InteractiveWorld::onMouseEvent(int eventType, int button, int mouseX, int m
 			if (input.length() > 0){
 				//get the object that we will be throwing...
 				getDodgeBallPosAndVel(-input.x, input.y, input.length(), &p, &input);
+				//getDodgeBallPosAndVel(-input.x, 0, input.length(), &p, &input);
 				dBall->setCMPosition(p);
 				dBall->setCMVelocity(input);
 //				dBall->updateToWorldTransformation();

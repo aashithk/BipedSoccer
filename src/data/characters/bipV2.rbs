@@ -6,7 +6,7 @@ A_RigidBody
 	mesh ../data/models/robotv2/pelvis_2_b.obj
 	colour 0.5 0.5 0.5 1
 	mesh ../data/models/robotv2/pelvis_2_s.obj
-	colour 0.8 0.8 0.8 1
+	colour 0.8 0.8 0.2 1
 	mass 12.9
 	moi 0.0705 0.11 0.13
 	CDP_Sphere 0 -0.075 0 0.12

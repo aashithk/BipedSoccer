@@ -1,7 +1,7 @@
 RigidBody
 	name dodgeBall
 	mesh ../data/models/sphere.obj
-	mass 5
+	mass 2
 	moi 0.2 0.2 0.2
 	colour 0.8 0 0 1
 	CDP_Sphere 0 0 0 0.1
