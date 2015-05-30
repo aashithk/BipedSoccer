@@ -19,14 +19,12 @@ PDParams
 
 
 
-
 ConState 0
 	description Default state in the walking controller
 	nextState 0
 	transitionOn footDown
 	stateStance reverse
 	time 0.500000
-
 
 
 	trajectory root
@@ -146,7 +144,7 @@ ConState 0
 			/feedback
 			baseTrajectory
 				0.013378 -0.114666
-				0.158528 0.400000
+				0.158528 0.4
 				0.989967 0.379757
 			/baseTrajectory
 		/component
@@ -264,4 +262,4 @@ ConState 0
 
 startAtState 0
 startingStance left
-loadCharacterState ..\controlShots\cs00003.rs
+loadCharacterState ../data/controllers/bipV2/kWalkState.rs

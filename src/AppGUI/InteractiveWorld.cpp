@@ -30,6 +30,10 @@
 #include <Core/SimBiConFramework.h>
 #include <Utils/Utils.h>
 
+
+
+//Global ball to be used by ControllerEditor
+RigidBody* dBall;
 /**
  * Constructor.
  */
@@ -81,11 +85,24 @@ uint InteractiveWorld::renderToObjFile(FILE* fp, uint vertexIdxOffset) {
 
 
 }
+/**
+*Function to return the Dodge Ball
+*/
 
-
+RigidBody* InteractiveWorld::getBall() {
+	if (dBall == NULL)
+	{
+		return NULL;
+	}
+	else
+	{
+		return dBall;
+	}
+}
 /**
  *	This method is used when a mouse event gets generated. This method returns true if the message gets processed, false otherwise.
  */
+
 bool InteractiveWorld::onMouseEvent(int eventType, int button, int mouseX, int mouseY){
 	//need to figure out if the mouse is in the push interface window (and if we care)...
 	if (Globals::drawPushInterface == 1 && button == MOUSE_LBUTTON && eventType != MOUSE_UP){
@@ -101,7 +118,8 @@ bool InteractiveWorld::onMouseEvent(int eventType, int button, int mouseX, int m
 			return false;
 		}
 
-		RigidBody* dBall = world->getRBByName("dodgeBall");
+		//RigidBody* dBall = world->getRBByName("dodgeBall");
+		dBall = world->getRBByName("dodgeBall");
 		if (dBall == NULL){
 			tprintf("Warning: No dodgeBall loaded!\n");
 			return false;

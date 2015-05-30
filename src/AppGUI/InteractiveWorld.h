@@ -64,5 +64,6 @@ public:
 	 * Returns the number of vertices written to the file
      */
 	uint renderToObjFile(FILE* fp, uint vertexIdxOffset);
+	RigidBody* InteractiveWorld::getBall();
 
 };

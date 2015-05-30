@@ -23,7 +23,8 @@
 
 #include "ControllerEditor.h"
 #include "Globals.h"
-
+#include "InteractiveWorld.h"
+#include <math.h>
 
 /**
  * Constructor.
@@ -362,13 +363,32 @@ void ControllerEditor::processTask(){
 			vTrajZ.addKnot( phi, v.z  );					
 
 			bool newStep = conF->advanceInTime(SimGlobals::dt);
-
-			if( newStep ) {
+			//int sign = -1;
+			if (newStep) {
 				avgSpeed /= timesVelSampled;
 				Vector3d v = conF->getLastStepTaken();
 				tprintf("step: %lf %lf %lf (phi = %lf, speed = %lf)\n", v.x, v.y, v.z, phi, avgSpeed);
-//				Globals::animationRunning = false;
+				//Globals::animationRunning = false;
 
+				//conF->getCharacter()->setHeading(.2);
+				RigidBody* bBall = InteractiveWorld::getBall();
+				if (bBall != NULL)
+				{
+				double q1 = bBall->getCMPosition().getZ();
+				double q2 = bBall->getCMPosition().getX();
+				double m1 = conF->getCharacter()->getRoot()->getCMPosition().getZ();
+				double m2 = conF->getCharacter()->getRoot()->getCMPosition().getX();
+
+				double q = (q2 - m2)/(q1 - m1);
+				double curr = v.z;
+				conF->getCharacter()->setHeading(q/2);
+				//conF->getCharacter()->setHeading(q/3);
+
+				SimGlobals::desiredHeading = (q/2);
+
+				tprintf("step: %lf %lf %lf %lf %lf %lf %lf %lf\n", curr, q, q1, q2, m1, m2, bBall->getOrientation().getV().getX(),bBall->getOrientation().getV().getZ());
+				}
+				
 				avgSpeed = 0;
 				timesVelSampled = 0;
 
@@ -559,10 +579,15 @@ void ControllerEditor::getDodgeBallPosAndVel(double x, double y, double strength
 	vel->x = x;
 	vel->y = 0;
 	vel->z = y;
-
-	*vel = conF->getCharacter()->getHeading().rotate(*vel) * 20;
+	*vel = conF->getCharacter()->getHeading().rotate(*vel) * -20;
 	*pos = conF->getCharacter()->getRoot()->getCMPosition();
 	*pos = *pos + conF->getCharacter()->getRoot()->getCMVelocity() * 0.5;
-	pos->y +=1;
-	*pos = *pos + vel->unit() * (-2);
+	//pos->y +=1;
+	pos->y +=-.5;
+
+	*pos = *pos + vel->unit() * (2);
+	//SimGlobals::desiredHeading = (y);
+	//conF->getCharacter()->setHeading(x);
+
+
 }

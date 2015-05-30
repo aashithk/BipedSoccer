@@ -89,7 +89,7 @@ public:
 		if (stance == RIGHT_STANCE && reverseAngleOnRightStance)
 			baseAngle = -baseAngle;
 
-		double feedbackValue = computeFeedback(con, j, phi, d, v);
+		double feedbackValue =  computeFeedback(con, j, phi, d, v);
 
 		return Quaternion::getRotationQuaternion(baseAngle + feedbackValue, rotationAxis);
 	}

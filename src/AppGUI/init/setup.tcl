@@ -4,7 +4,7 @@
 
 # laptop settings 
 
-set laptop 0
+set laptop 1
 
 if {$laptop == 1} {
 	puts "laptop = 1"

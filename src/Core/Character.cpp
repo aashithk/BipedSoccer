@@ -313,7 +313,6 @@ int Character::getJointCount(){
 ArticulatedFigure* Character::getAF(){
 	return af;
 }
-
 /**
 	this method is used to rotate the character about the vertical axis, so that it's default heading has the value that is given as a parameter
 */

@@ -33,7 +33,7 @@
 */
 class Character{
 	friend class SimBiController;
-private:
+public:
 	//this is the reference to the articulated figure that the character represents
 	ArticulatedFigure* af;
 	//keep a list of the character's joints, for easy access
