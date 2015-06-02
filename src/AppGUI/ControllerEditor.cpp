@@ -25,6 +25,7 @@
 #include "Globals.h"
 #include "InteractiveWorld.h"
 #include <math.h>
+#include "Core\SimBiController.h"
 
 /**
  * Constructor.
@@ -333,6 +334,9 @@ Point3d ControllerEditor::getCameraTarget(){
 void ControllerEditor::processTask(){
 	double simulationTime = 0;
 	double maxRunningTime = 0.98/Globals::desiredFrameRate;
+	Vector3d backupInput;
+	bool once = false;
+
 	//if we still have time during this frame, or if we need to finish the physics step, do this until the simulation time reaches the desired value
 	while (simulationTime/maxRunningTime < Globals::animationTimeToRealTimeRatio){
 		simulationTime += SimGlobals::dt;
@@ -364,6 +368,13 @@ void ControllerEditor::processTask(){
 
 			bool newStep = conF->advanceInTime(SimGlobals::dt);
 			//int sign = -1;
+			double maxChange = 0.2;
+			char * s = "out\\reducedCharacterState.rs";
+			if (!once)
+			{
+				backupInput = conF->getCharacter()->getRoot()->getCMVelocity();
+				once = true;
+			}
 			if (newStep) {
 				avgSpeed /= timesVelSampled;
 				Vector3d v = conF->getLastStepTaken();
@@ -380,13 +391,79 @@ void ControllerEditor::processTask(){
 				double m2 = conF->getCharacter()->getRoot()->getCMPosition().getX();
 
 				double q = (q2 - m2)/(q1 - m1);
-				double curr = v.z;
-				conF->getCharacter()->setHeading(q/2);
-				//conF->getCharacter()->setHeading(q/3);
+				double curr = SimGlobals::desiredHeading;
+				double diff = ( q - diff);
+				double dist = sqrt(pow((q2 - m2), 2) + pow((q1 - m1), 2));
+				if (dist < .4)
+				{
+					//s = "out\\reducedCharacterState1.rs";
+					tprintf("state changed once");
 
-				SimGlobals::desiredHeading = (q/2);
+					//Vector3d input=conF->getCharacter()->getRoot()->getCMVelocity() * 1.2;
 
-				tprintf("step: %lf %lf %lf %lf %lf %lf %lf %lf\n", curr, q, q1, q2, m1, m2, bBall->getOrientation().getV().getX(),bBall->getOrientation().getV().getZ());
+					//conF->getCharacter()->getRoot()->setCMVelocity(input);
+
+					//Vector3d d = conF->getController()->d;
+					//Vector3d v = conF->getController()->v;
+					//dTrajX.addKnot(phi, d.x * signChange);
+					//dTrajZ.addKnot(phi, d.z*2);
+					//vTrajX.addKnot(phi, v.x * signChange);
+					//vTrajZ.addKnot(phi, v.z*2);
+
+					//Character* bip = conF->getCharacter();
+					//SimBiController* con = new SimBiController(bip);
+					//char * fline = "../data/characters/fJog.rbs";
+					//FILE *f = fopen(fline, "r");
+					//SimBiConState* tempState;
+					
+					
+					//con->loadFromFile(line);
+
+					
+				}
+				else
+				{
+					Vector3d input = backupInput;
+
+					conF->getCharacter()->getRoot()->setCMVelocity(input);
+					//s = "out\\reducedCharacterState.rs";
+				}
+				/*if (q > 0)
+				{
+					if (abs(diff) > .2)
+					{
+						conF->getCharacter()->setHeading(curr + maxChange);
+						//conF->getCharacter()->setHeading(q/3);
+						SimGlobals::desiredHeading = (curr + maxChange);
+					}
+					else
+					{
+						conF->getCharacter()->setHeading(q / 2);
+						//conF->getCharacter()->setHeading(q/3);
+						SimGlobals::desiredHeading = (q / 2);
+					}
+
+				}
+				else
+				{
+					if (abs(diff) > .2)
+					{
+						conF->getCharacter()->setHeading(curr - maxChange);
+						//conF->getCharacter()->setHeading(q/3);
+						SimGlobals::desiredHeading = (curr - maxChange);
+					}
+					else
+					{*/
+				q = atan(q);
+				
+						conF->getCharacter()->setHeading(q );
+						//conF->getCharacter()->setHeading(q/3);
+						SimGlobals::desiredHeading = (q);
+					/*}
+
+
+				}*/
+				tprintf("step: %lf %lf %lf %lf %lf %lf %lf %lf %lf\n",dist ,curr, q, q1, q2, m1, m2, bBall->getOrientation().getV().getX(),bBall->getOrientation().getV().getZ());
 				}
 				
 				avgSpeed = 0;
@@ -403,7 +480,7 @@ void ControllerEditor::processTask(){
 
 				ReducedCharacterState rNew(&newState);
 
-				conF->getCharacter()->saveReducedStateToFile("out\\reducedCharacterState.rs", newState);
+				conF->getCharacter()->saveReducedStateToFile(s, newState);
 			}
 
 //			if (conF->getController()->isBodyInContactWithTheGround()){
@@ -481,7 +558,7 @@ int getStateNames (ClientData clientData, Tcl_Interp *interp, int argc, CONST84 
 	while( true ) {
 		SimBiConState* state = controller->getState( i++ );
 		if( !state ) break;
-		stateNames.push_back( state->getDescription() );
+		stateNames.push_back( state->getDescription());
 	}	
 
 	char* result = stringListToTclList( stateNames );

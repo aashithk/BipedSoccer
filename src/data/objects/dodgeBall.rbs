@@ -1,12 +1,12 @@
 RigidBody
 	name dodgeBall
 	mesh ../data/models/sphere.obj
-	mass 2
+	mass .5
 	moi 0.2 0.2 0.2
-	colour 0.8 0 0 1
+	colour 0.8 1 1 1
 	CDP_Sphere 0 0 0 0.1
 	position 1000 1000 0.2
-	frictionCoefficient 1.8
+	frictionCoefficient 1
 	restitutionCoefficient 0.35	
 /End
 

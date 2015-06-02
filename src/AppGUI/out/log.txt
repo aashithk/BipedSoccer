@@ -1,1 +1,1 @@
-Error: Inccorect state offset specified: 0
+Error: Could not open file: ../data/characters/fJog.rbs

@@ -295,6 +295,11 @@ public:
 	SimBiConState* getState( uint idx );
 
 	/**
+		This makes it possible to access the entire list of states
+	*/
+	DynamicArray<SimBiConState*> getStates();
+
+	/**
 		This method makes it possible to evaluate the debug pose at any phase angle
 		Negative phase angle = Use the current controller phase angle
 	*/

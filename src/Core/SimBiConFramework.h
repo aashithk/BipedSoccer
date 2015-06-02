@@ -48,9 +48,10 @@ typedef struct {
 
 class SimBiConFramework : public BaseControlFramework{
 	friend class ControllerEditor;
-private:
+public:
 	//this is the controller that we will use.
 	SimBiController* con;
+	SimBiController* Scon;
 
 	//we'll keep track of the vector that represents each step taken. The vector will be represented in the 'relative' world coordinate frame
 	Vector3d lastStepTaken;

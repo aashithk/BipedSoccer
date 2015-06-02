@@ -32,6 +32,7 @@ SimBiConFramework::SimBiConFramework(char* input, char* conFile){
 	//create the physical world...
 	pw = SimGlobals::getRBEngine();
 	con = NULL;
+	Scon = NULL;
 	bip = NULL;
 	bool conLoaded = false;
 
@@ -58,10 +59,13 @@ SimBiConFramework::SimBiConFramework(char* input, char* conFile){
 		int lineType = getConLineType(line);
 		switch (lineType) {
 			case LOAD_RB_FILE:
+				tprintf(trim(line));
 				pw->loadRBsFromFile(trim(line));
 				if (bip == NULL && pw->getAFCount()>0) {
 					bip = new Character(pw->getAF(0));
 					con = new SimBiController(bip);
+					//Scon = new SimBiController(bip);
+
 				}
 				break;
 			case LOAD_CON_FILE:
@@ -69,6 +73,7 @@ SimBiConFramework::SimBiConFramework(char* input, char* conFile){
 				if( con == NULL )
 					throwError("The physical world must contain at least one articulated figure that can be controlled!");
 				con->loadFromFile(trim(line));
+				//Scon->loadFromFile(trim("../data/characters/fJog.rbs"));
 				conLoaded = true;
 				break;
 			case CON_NOT_IMPORTANT:
